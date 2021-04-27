@@ -8,25 +8,26 @@ import './Checkout.override.style.scss';
 export class CheckoutComponent extends SourceCheckout {
     renderCheckoutProcess() {
         const { checkoutStep } = this.props;
-        const isShippingComplete = checkoutStep === BILLING_STEP || checkoutStep === DETAILS_STEP;
-        const billingActive = isShippingComplete ? 'active' : '';
+
+        const isSuccess = checkoutStep === DETAILS_STEP;
+        const isShippingComplete = checkoutStep === BILLING_STEP || isSuccess;
+
+        const billingFillBefore = isShippingComplete ? 'fillBefore' : '';
+        const billingFillAfter = isSuccess ? 'fillAfter' : '';
+
         const shippingNo = isShippingComplete ? <span>&#10003;</span> : 1;
-        const billingNo = checkoutStep === DETAILS_STEP ? <span>&#10003;</span> : 2;
-        const successActive = checkoutStep === DETAILS_STEP ? 'active' : '';
+        const billingNo = isSuccess ? <span>&#10003;</span> : 2;
 
         return (
             <div block="ProcessBar">
-                <div block="Line active" />
-                <div block="NumberWrapper">
-                    <div block="Number active">{ shippingNo }</div>
-                    <div>Shipping</div>
+                <div block="NumberWrapper fillBefore">
+                    <div block="Number">{ shippingNo }</div>
+                    <div block="Step">Shipping</div>
                 </div>
-                <div block={ `Line ${billingActive}` } />
-                <div block="NumberWrapper">
-                    <div block={ `Number ${billingActive}` }>{ billingNo }</div>
-                    <div>Review & Payments</div>
+                <div block={ `NumberWrapper ${billingFillAfter} ${billingFillBefore}` }>
+                    <div block="Number">{ billingNo }</div>
+                    <div block="Step">Review & Payments</div>
                 </div>
-                <div block={ `Line ${successActive}` } />
             </div>
         );
     }

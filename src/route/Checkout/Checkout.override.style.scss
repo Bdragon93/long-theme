@@ -1,9 +1,11 @@
 $redProcess: #9e1f1f;
 $greyProcess: #d6d6d6;
 $greyProcessNumber: #919191;
+$greyTitle: #a3a3a3;
 
-$lineHeight: 6px;
 $numberSize: 30px;
+$lineSpace: 10px;
+$numberToLine: #{$numberSize}/ 2 + #{$lineSpace};
 
 @media (min-width: 811px) {
   .Checkout::before {
@@ -11,56 +13,93 @@ $numberSize: 30px;
   }
 }
 
+%linearBackground {
+  background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%) right;
+  background-size: 200%;
+  transition: 1s ease-out;
+}
+
 .ProcessBar {
   display: flex;
   width: 100%;
-  // align-items: center;
   background-color: var(--breadcrumbs-background);
-  padding: 20px 0;
+  padding: 30px 0 50px;
+}
 
-  .Line {
+.NumberWrapper {
+  flex: 1;
+  position: relative;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+
+  &:before {
+    @extend %linearBackground;
+    width: calc(100% - (#{$numberSize} + #{$lineSpace}* 2));
+    background-color: $redProcess;
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: calc(50% + #{$numberToLine});
+    height: 4px;
+    content: '';
+    transform: translateY(-50%);
     border-radius: 4px;
-    height: $lineHeight;
-    display: inline-block;
-    // background-color: $greyProcess;
-    background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%)
-      right;
-    background-size: 200%;
-    transition: 1s ease-out;
-    flex-grow: 1;
-    margin-top: calc(#{$numberSize}/ 2 - #{$lineHeight}/ 2);
+  }
 
-    &.active {
-      // background-color: $redProcess;
-      background-position: left;
+  &:not(:first-child) {
+    &:after {
+      @extend %linearBackground;
+      width: 50%;
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: calc(50% + #{$numberToLine});
+      height: 4px;
+      content: '';
+      transform: translateY(-50%);
+      border-radius: 4px;
     }
   }
 
-  .NumberWrapper {
-    font-size: 15px;
-    font-weight: 800;
-    text-align: center;
-    margin: 0 12px;
+  &.fillAfter:after {
+    background-position: left;
+  }
 
-    .Number {
-      background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%)
-        right;
-      background-size: 200%;
-      transition: 1s ease-out;
-      border-radius: 50%;
-      display: inline-block;
-      height: $numberSize;
-      width: $numberSize;
-      text-align: center;
-      line-height: 30px;
-      margin-bottom: 5px;
-      color: $greyProcessNumber;
-
-      &.active {
-        color: var(--secondary-success-color);
-        // background-color: $redProcess;
-        background-position: left;
-      }
+  &.fillBefore {
+    &:before {
+      background-position: left;
     }
+  }
+}
+
+.Number {
+  z-index: 1;
+  background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%) right;
+  background-size: 200%;
+  transition: 1s ease-out;
+  border-radius: 50%;
+  display: inline-block;
+  height: $numberSize;
+  width: $numberSize;
+  text-align: center;
+  line-height: 30px;
+  color: $greyProcessNumber;
+
+  .NumberWrapper.fillBefore & {
+    color: var(--secondary-success-color);
+    background-position: left;
+  }
+}
+
+.Step {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 5px);
+  color: $greyTitle;
+
+  .NumberWrapper.fillBefore & {
+    color: inherit;
   }
 }
