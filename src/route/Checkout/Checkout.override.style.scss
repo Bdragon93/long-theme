@@ -1,0 +1,66 @@
+$redProcess: #9e1f1f;
+$greyProcess: #d6d6d6;
+$greyProcessNumber: #919191;
+
+$lineHeight: 6px;
+$numberSize: 30px;
+
+@media (min-width: 811px) {
+  .Checkout::before {
+    display: none;
+  }
+}
+
+.ProcessBar {
+  display: flex;
+  width: 100%;
+  // align-items: center;
+  background-color: var(--breadcrumbs-background);
+  padding: 20px 0;
+
+  .Line {
+    border-radius: 4px;
+    height: $lineHeight;
+    display: inline-block;
+    // background-color: $greyProcess;
+    background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%)
+      right;
+    background-size: 200%;
+    transition: 1s ease-out;
+    flex-grow: 1;
+    margin-top: calc(#{$numberSize}/ 2 - #{$lineHeight}/ 2);
+
+    &.active {
+      // background-color: $redProcess;
+      background-position: left;
+    }
+  }
+
+  .NumberWrapper {
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 12px;
+
+    .Number {
+      background: linear-gradient(to left, $greyProcess 50%, $redProcess 50%)
+        right;
+      background-size: 200%;
+      transition: 1s ease-out;
+      border-radius: 50%;
+      display: inline-block;
+      height: $numberSize;
+      width: $numberSize;
+      text-align: center;
+      line-height: 30px;
+      margin-bottom: 5px;
+      color: $greyProcessNumber;
+
+      &.active {
+        color: var(--secondary-success-color);
+        // background-color: $redProcess;
+        background-position: left;
+      }
+    }
+  }
+}
